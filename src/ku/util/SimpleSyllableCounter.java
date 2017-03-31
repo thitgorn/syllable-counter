@@ -1,22 +1,32 @@
 package ku.util;
 
 /**
+ * Count the syllable by using vowel.
  * 
  * @author Thitiwat Thongbor
  *
  */
 public class SimpleSyllableCounter {
 
+	/**
+	 * count how many syllable in the word
+	 * 
+	 * @param word
+	 *            for counting
+	 * @return the number of syllable
+	 */
 	public int countSyllables(String word) {
 		final int LastChar = word.length() - 1;
 		int syllables = 0;
 		char c = ' ';
 		State state = State.START;
+		// go over through the word
 		for (int i = 0; i < word.length(); i++) {
 			c = word.charAt(i);
 			if (c == '\'')
 				continue; // ignore apostrophe
 			switch (state) {
+			// do it by state
 			case START:
 				if (isVowelOrY(c)) {
 					syllables++;
@@ -98,6 +108,13 @@ public class SimpleSyllableCounter {
 		return syllables;
 	}
 
+	/**
+	 * checking is this the latter of not
+	 * 
+	 * @param c
+	 *            character to check
+	 * @return true if yes.
+	 */
 	private boolean isLetter(char c) {
 		if (Character.isLetter(c)) {
 			return true;
@@ -105,6 +122,13 @@ public class SimpleSyllableCounter {
 			return false;
 	}
 
+	/**
+	 * checking is this the vowel including y letter [vowel as well]
+	 * 
+	 * @param c
+	 *            character to check
+	 * @return true if yes
+	 */
 	private boolean isVowelOrY(char c) {
 		final char[] vowel = { 'a', 'e', 'i', 'o', 'u', 'y' };
 		for (char v : vowel) {
@@ -115,6 +139,13 @@ public class SimpleSyllableCounter {
 		return false;
 	}
 
+	/**
+	 * checking is the the vowel.
+	 * 
+	 * @param c
+	 *            character to check
+	 * @return true if yes
+	 */
 	private boolean isVowel(char c) {
 		final char[] vowel = { 'a', 'e', 'i', 'o', 'u' };
 		for (char v : vowel) {

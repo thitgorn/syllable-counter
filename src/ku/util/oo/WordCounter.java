@@ -1,20 +1,38 @@
 package ku.util.oo;
 
+/**
+ * Word counter machine using OO design to count to the word.
+ * 
+ * @author Thitiwat Thongbor
+ *
+ */
 public class WordCounter {
+	// declare the constant first , using it as State.
 	private final State START = new StartState();
 	private final State SINGLEVOWEL = new SingleVowelState();
 	private final State MULTIVOWEL = new MultiVowelState();
 	private final State CONSONANT = new ConsonantState();
 	private final State HYPHEN = new HyphenState();
 	private final State STOP = new StopState();
+	// declare attribute
 	private State state;
 	private int syllableCount;
 	private int cursor, LastChar;
 	private String word;
 
+	/**
+	 * construct the word counter machine
+	 */
 	public WordCounter() {
 	}
 
+	/**
+	 * count the syllable of the word
+	 * 
+	 * @param word
+	 *            to count
+	 * @return the value how many syllable
+	 */
 	public int countSyllables(String word) {
 		syllableCount = 0;
 		this.word = word;
@@ -30,10 +48,19 @@ public class WordCounter {
 		return syllableCount;
 	}
 
+	/**
+	 * set the current state.
+	 * 
+	 * @param state
+	 *            to set
+	 */
 	public void setState(State state) {
 		this.state = state;
 	}
 
+	/**
+	 * Start state uses the command at the state checking first character.
+	 */
 	class StartState extends State {
 		@Override
 		public void handleChar(char c) {
@@ -57,6 +84,10 @@ public class WordCounter {
 
 	}
 
+	/**
+	 * action for SingleVowel state it's happen when the character begin vowel
+	 * or y.
+	 */
 	class SingleVowelState extends State {
 		@Override
 		public void handleChar(char c) {
@@ -82,6 +113,10 @@ public class WordCounter {
 		}
 	}
 
+	/**
+	 * action for multivowel state , decide which is going next after being in
+	 * this state.
+	 */
 	class MultiVowelState extends State {
 		@Override
 		public void handleChar(char c) {
@@ -107,13 +142,16 @@ public class WordCounter {
 		}
 	}
 
+	/**
+	 * A consonant state is a letter state decide what to go next.
+	 */
 	class ConsonantState extends State {
 		@Override
 		public void handleChar(char c) {
 			if (super.isVowelOrY(c)) {
 				if (cursor == LastChar && syllableCount == 0) {
 					syllableCount++;
-				} else if (cursor == LastChar && (c == 'e' || c=='E')) {
+				} else if (cursor == LastChar && (c == 'e' || c == 'E')) {
 
 				} else {
 					syllableCount++;
@@ -140,6 +178,9 @@ public class WordCounter {
 
 	}
 
+	/**
+	 * if it is hypen (-) come to this state and action it.
+	 */
 	class HyphenState extends State {
 		@Override
 		public void handleChar(char c) {
@@ -160,18 +201,16 @@ public class WordCounter {
 		}
 	}
 
+	/**
+	 * this state is not doing anything use it for stop the counter.
+	 */
 	class StopState extends State {
-
 		@Override
 		public void handleChar(char c) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void enterState() {
-
 		}
-
 	}
 }
