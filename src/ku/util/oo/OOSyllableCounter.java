@@ -1,7 +1,8 @@
 package ku.util.oo;
 
 public class OOSyllableCounter {
-	public int countSyllables(String word){
-		return 0;
+	public static void main(String[] args) {
+		WordCounter counter = new WordCounter();
+		System.out.println(counter.countSyllables("jerigoeraoi-arefpokarf"));
 	}
 }
