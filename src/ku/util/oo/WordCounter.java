@@ -8,7 +8,7 @@ public class WordCounter {
 	private final State HYPHEN = new HyphenState();
 	private final State STOP = new StopState();
 	private State state;
-	private int syllableCount = 0;
+	private int syllableCount;
 	private int cursor, LastChar;
 	private String word;
 
@@ -16,6 +16,7 @@ public class WordCounter {
 	}
 
 	public int countSyllables(String word) {
+		syllableCount = 0;
 		this.word = word;
 		LastChar = word.length() - 1;
 		setState(START);
@@ -42,7 +43,7 @@ public class WordCounter {
 			} else if (super.isLetter(c)) {
 				setState(CONSONANT);
 			} else if (c == '-') {
-				setState(HYPHEN);
+				setState(STOP);
 			} else {
 				syllableCount = 0;
 				setState(STOP);
@@ -65,7 +66,6 @@ public class WordCounter {
 				setState(CONSONANT);
 			} else if (c == '-') {
 				if (cursor == LastChar) {
-					syllableCount = 0;
 					setState(STOP);
 				} else {
 					setState(HYPHEN);
@@ -85,13 +85,12 @@ public class WordCounter {
 	class MultiVowelState extends State {
 		@Override
 		public void handleChar(char c) {
-			if (super.isLetter(c)) {
+			if (super.isVowel(c)) {
 				setState(MULTIVOWEL);
 			} else if (super.isLetter(c)) {
 				setState(CONSONANT);
 			} else if (c == '-') {
 				if (cursor == LastChar) {
-					syllableCount = 0;
 					setState(STOP);
 				} else {
 					setState(HYPHEN);
@@ -114,7 +113,7 @@ public class WordCounter {
 			if (super.isVowelOrY(c)) {
 				if (cursor == LastChar && syllableCount == 0) {
 					syllableCount++;
-				} else if (cursor == LastChar && c == 'e') {
+				} else if (cursor == LastChar && (c == 'e' || c=='E')) {
 
 				} else {
 					syllableCount++;
@@ -124,7 +123,6 @@ public class WordCounter {
 				setState(CONSONANT);
 			} else if (c == '-') {
 				if (cursor == LastChar) {
-					syllableCount = 0;
 					setState(STOP);
 				} else {
 					setState(HYPHEN);
